@@ -7,10 +7,10 @@
         ![image](./img/plot1dMask.png)
 
     - After Fourier Transformation
-        ![image](./img/plot1dTransformation.png)
+        ![image](./img/plot1dFT.png)
     
     - Aperture Region
-        ![image](./img/plot1dAperture.png)
+        ![image](./img/plot1dCut.png)
     
     - Aerial Image
-        ![image](./img/plot1dInverseFFT.png)
+        ![image](./img/plot1dIFT.png)
