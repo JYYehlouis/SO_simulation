@@ -32,7 +32,7 @@ def get_mask(x: npt.ArrayLike, width) -> npt.ArrayLike:
     """
     return np.where(np.abs(x) <= width, 1, 0)
 
-def get_plane_wave(x: npt.ArrayLike, magnitude: np.float128 = 10) -> npt.ArrayLike:
+def get_plane_wave(x: npt.ArrayLike, magnitude: np.float128 = 1) -> npt.ArrayLike:
     """
         Parameters:
             x (np.ndarray): a 1D array of x values
@@ -64,28 +64,7 @@ def generate_freq_from_xy(
     return x, y
 
 
-def generate_xy_from_freq(
-    E_out: npt.ArrayLike, 
-    size: int, 
-    Fs: int
-) -> Tuple[npt.ArrayLike, npt.ArrayLike]:
-    """
-        Parameters:
-            E_out (np.ndarray): a 1D array of y values
-            size (int): the size of the input space
-            Fs (int): the number of points in the sample
-
-        Returns:
-            x (np.ndarray): a 1D array of x values (x space)
-            y (np.ndarray): a 1D array of y values (value)
-    """
-    N = (size - 1) // 2
-    y = np.concatenate((E_out[N + 1:], E_out[:N + 1]))
-    x = get_x(N, Fs)
-    return x, y
-
-
-def plotTransformation(space: int = 1000, width: int = 100, Fs: int = 100):
+def plotTransformation(space: int = 1000, width: int = 100, Fs: int = 1000):
     """
         Plots the transformation of the plane wave
 
@@ -104,8 +83,7 @@ def plotTransformation(space: int = 1000, width: int = 100, Fs: int = 100):
     E_in, freq, E_out = plot1dFT(x, mask)
 
     # after aperture
-    cut = 0.0025
-    E_cut = plot1dCut(freq, E_out, cut)
+    E_cut = plot1dCut(freq, E_out)
 
     # inverse fft
     E_ifft = plot1dIFT(E_cut, x)
@@ -138,6 +116,8 @@ def plot1dMask(
     plt.ylabel('Magnitude')
     plt.xlim(-space, space)
     plt.ylim(0, 1.1)
+    plt.xticks(np.linspace(-space, space, 11))
+    plt.yticks(np.linspace(0, 2, 3))
     plt.plot(x, mask, '-')
     plt.savefig('./img/plot1dMask.png')
     plt.show()
@@ -175,7 +155,7 @@ def plot1dFT(
 def plot1dCut(
     freq: npt.ArrayLike, 
     E_out: npt.ArrayLike, 
-    cut: np.float128
+    cut: np.float128 = 0.005
 ) -> npt.ArrayLike:
     cond_cut = np.abs(freq) <= cut
     E_cut = np.where(cond_cut, E_out, 0)
@@ -206,7 +186,7 @@ def plot1dIFT(
 ) -> npt.ArrayLike:
     E_ifft = np.fft.ifft(E_cut)
     E = np.abs(E_ifft)
-    I = np.power(E, 2) / (2 * eta)
+    I = np.power(E, 2)
     # set up the plot
     y_max = np.max(I)
     x_max = np.max(x)
@@ -215,15 +195,19 @@ def plot1dIFT(
     plt.title('Aerial Image after Inverse FFT')
     plt.xlabel('x (nm)')
     plt.ylabel('Intensity')
-    plt.ylim(0, y_max)
+    plt.ylim(0, 1)
     plt.xlim(-x_max, x_max)
     plt.axline((-x_max, I_min), (x_max, I_min), color='red', linestyle='-')
+    x_temp = np.where(I >= I_min, x, 0)
+    plt.plot(np.min(x_temp), I_min, 'ro', label=f'({np.min(x_temp):.4f}, {I_min})')
+    plt.plot(np.max(x_temp), I_min, 'ro', label=f'({np.max(x_temp):.4f}, {I_min})')
     plt.plot(x, I, '-')
+    plt.legend()
     plt.savefig('./img/plot1dIFT.png')
     plt.show()
     return E_ifft
 
 
 if __name__ == '__main__':
-    space, width, Fs = 1000, 100, 100
+    space, width, Fs = 1000, 100, 1000
     plotTransformation(space, width, Fs)
