@@ -11,7 +11,7 @@ SO_simulation
     │   ├─ dense_line.ipynb         # dense line patterns
     │   ├─ dense_line_cmp.ipynb     # dense line C.D comparison using torch (about 6 hours)
     │   ├─ simulation_final.pdf     # presentation for the 1D simulation
-    │   └─ spec.txt                 # packages used and some specified versions
+    │   └─ build.sh                 # using conda to build the environment
     │
     └─ README.md
 ```
