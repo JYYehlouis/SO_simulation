@@ -10,8 +10,11 @@ SO_simulation
     │   ├─ single_slit.ipynb        # single slit patterns and C.D. comparison
     │   ├─ dense_line.ipynb         # dense line patterns
     │   ├─ dense_line_cmp.ipynb     # dense line C.D comparison using torch (about 6 hours)
-    │   ├─ simulation_final.pdf     # presentation for the 1D simulation
-    │   └─ build.sh                 # using conda to build the environment
+    │   └─ simulation_final.pdf     # presentation for the 1D simulation
+    ├─ sim-preparation
+    │   └─ sketch.ipynb             # a sketch
     │
-    └─ README.md
+    ├─ .gitignore
+    ├─ README.md
+    └─ build.sh                 # using conda to build the environment
 ```
