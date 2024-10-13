@@ -14,7 +14,9 @@ SO_simulation
     ├─ sim-preparation
     │   ├─ sketch_1D.ipynb          # a sketch for 1D area sources
     |   ├─ sketch_2D.ipynb          # a sketch for 2D area sources
-    |   └─ sources_1D.ipynb         # open sources are opened and the aerial image pattern
+    |   ├─ sources_1D.ipynb         # open sources are opened and the aerial image pattern
+    |   ├─ sources_2D.ipynb         # open sources and optimized sources and the aerial image pattern
+    |   └─ func.py                  # functions used in sources_2D.ipynb
     │
     ├─ .gitignore
     ├─ build.sh                     # using conda to build the environment
